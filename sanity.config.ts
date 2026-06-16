@@ -1,7 +1,7 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { schema } from './src/sanity/schemaTypes'
-import { cloudinaryAssetSourcePlugin } from 'sanity-plugin-cloudinary'
+import { cloudinaryAssetSourcePlugin, cloudinarySchemaPlugin } from 'sanity-plugin-cloudinary'
 
 export default defineConfig({
   basePath: '/admin',
@@ -12,5 +12,6 @@ export default defineConfig({
   plugins: [
     structureTool(),
     cloudinaryAssetSourcePlugin(),
+    cloudinarySchemaPlugin(),
   ],
 })
