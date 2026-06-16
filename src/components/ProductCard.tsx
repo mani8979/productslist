@@ -1,17 +1,20 @@
 import Image from "next/image";
-import { urlFor } from "../sanity/lib/client";
 
 export interface Product {
   _id: string;
   title: string;
-  image: any;
+  imageUrl?: string;
+  cloudinaryImage?: {
+    secure_url: string;
+    url: string;
+  };
   rank: number;
   redirectUrl: string;
 }
 
 export default function ProductCard({ product, index }: { product: Product; index: number }) {
-  // Use urlFor to generate the image URL if it's a Sanity image object
-  const imageUrl = product.image ? urlFor(product.image).url() : "https://placehold.co/400x400/e2e8f0/475569.png?text=No+Image";
+  // Use imageUrl if present, otherwise fall back to cloudinaryImage secure_url, else placeholder
+  const imgSrc = product.imageUrl || product.cloudinaryImage?.secure_url || "https://placehold.co/400x400/e2e8f0/475569.png?text=No+Image";
 
   return (
     <a 
@@ -24,12 +27,13 @@ export default function ProductCard({ product, index }: { product: Product; inde
       <div className="relative w-full aspect-square bg-white p-3 md:p-4 flex items-center justify-center">
         <div className="relative w-full h-full">
           <Image
-            src={imageUrl}
+            src={imgSrc}
             alt={product.title}
             fill
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
             className="object-contain p-2"
             loading={index < 8 ? "eager" : "lazy"}
+            unoptimized
           />
         </div>
       </div>

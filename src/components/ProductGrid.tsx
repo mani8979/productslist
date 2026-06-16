@@ -23,7 +23,8 @@ export default function ProductGrid() {
       let query = `*[_type == "product"] | order(rank asc, _id asc) [0...12] {
         _id,
         title,
-        image,
+        imageUrl,
+        cloudinaryImage,
         rank,
         redirectUrl
       }`;
@@ -32,7 +33,8 @@ export default function ProductGrid() {
         query = `*[_type == "product" && (rank > $lastRank || (rank == $lastRank && _id > $lastId))] | order(rank asc, _id asc) [0...12] {
           _id,
           title,
-          image,
+          imageUrl,
+          cloudinaryImage,
           rank,
           redirectUrl
         }`;

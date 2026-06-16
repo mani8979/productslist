@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { UrlFetcherInput } from '../components/UrlFetcherInput';
 
 export const productType = defineType({
   name: 'product',
@@ -12,13 +13,17 @@ export const productType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'image',
-      title: 'Product Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-      validation: (rule) => rule.required(),
+      name: 'imageUrl',
+      title: 'Product Image URL (Direct Link)',
+      type: 'url',
+      description: 'Direct link to the image (e.g. Amazon image URL)',
+      // Made optional so it won't block if fallback is used
+    }),
+    defineField({
+      name: 'cloudinaryImage',
+      title: 'Fallback Product Image',
+      type: 'cloudinary.asset',
+      description: 'Upload an image to Cloudinary if direct link is not available',
     }),
     defineField({
       name: 'rank',
@@ -33,6 +38,9 @@ export const productType = defineType({
       type: 'url',
       description: 'The URL where the user will be redirected when they click the product.',
       validation: (rule) => rule.required().uri({ scheme: ['http', 'https'] }),
+      components: {
+        input: UrlFetcherInput,
+      },
     }),
     defineField({
       name: 'category',
